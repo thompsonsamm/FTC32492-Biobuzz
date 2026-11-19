@@ -1,25 +1,3 @@
-/*   MIT License
- *   Copyright (c) [2026] [Base 10 Assets, LLC]
- *
- *   Permission is hereby granted, free of charge, to any person obtaining a copy
- *   of this software and associated documentation files (the "Software"), to deal
- *   in the Software without restriction, including without limitation the rights
- *   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- *   copies of the Software, and to permit persons to whom the Software is
- *   furnished to do so, subject to the following conditions:
-
- *   The above copyright notice and this permission notice shall be included in all
- *   copies or substantial portions of the Software.
-
- *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- *   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- *   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- *   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- *   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- *   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- *   SOFTWARE.
- */
-
 package org.firstinspires.ftc.teamcode;
 
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
@@ -33,22 +11,7 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.subsystems.mecanumdrive;
-
-/*
- * This file includes a teleop (driver-controlled) file for the goBILDA® StarterBot with
- * Wheels for the 2026-2027 FIRST® Tech Challenge. On top of a mecanum wheel drivetrain, it uses
- * one motor driving an intake roller, two servos which pull elements out of corners, and a high-speed
- * launcher motor.
- *
- * Likely the most niche concept we'll use in this example is closed-loop motor velocity control.
- * This control method reads the current speed as reported by the motor's encoder and applies a varying
- * amount of power to reach, and then hold a target velocity. The FTC SDK calls this control method
- * "RUN_USING_ENCODER". This contrasts to the default "RUN_WITHOUT_ENCODER" where you control the power
- * applied to the motor directly.
- * Since the dynamics of a launcher wheel system varies greatly from those of most other FTC mechanisms,
- * we will also need to adjust the "PIDF" coefficients with some that are a better fit for our application.
- */
-
+import org.firstinspires.ftc.teamcode.subsystems.pinpointv2;
 @TeleOp(name = "teleop", group = "StarterBot")
 //@Disabled
 public class teleop_ extends OpMode {
@@ -59,11 +22,9 @@ public class teleop_ extends OpMode {
     private CRServo leftIntakeServo = null;
     private CRServo rightIntakeServo = null;
     private CRServo windmillServo = null;
-
+    // line below calls the "mecanumdrive" subsystem for controlling the motors in all opmode classes and the "pinpointv2" one for the odometry.
     mecanumdrive drive = new mecanumdrive();
-
-
-
+    pinpointv2 pinpoint = new pinpointv2();
     /*
      * These two variables are used to control the velocity of the launcher motor.
      * They are both in encoder ticks per second. The motors we use in the FIRST Tech Challenge
@@ -72,18 +33,12 @@ public class teleop_ extends OpMode {
      * to get revolutions per minute.
      * We pass the target velocity variable to our motor to set the goal. We use the min velocity
      * in the launch() function to only run the windmill servo when the motor is spinning fast
-     * enough   +            to make a successful throw.
+     * enough to make a successful throw.
      */
-    public final int LAUNCHER_TARGET_VELOCITY = 1420; //2678 RPM
-    public final int LAUNCHER_MIN_VELOCITY = 1320; //2571 RPM
+    //Note: 50 velocity is equal to 107 RPM
+    public final int LAUNCHER_TARGET_VELOCITY = 1420;
+    public final int LAUNCHER_MIN_VELOCITY = 1320;
     private final boolean launcherToggle = false;
-    /* 50 velocity is equivalent to 107 rpm */
-
-    /*
-     * These four variables store the power we need to apply to the motors. In other cases, we may
-     * choose to declare these variables inside the mecanumDrive() function, instead we declare them
-     * here so that we can access them in our main loop for telemetry.
-     */
     // Create a variable to set to the intake.
     double intakePower;
 
@@ -104,6 +59,7 @@ public class teleop_ extends OpMode {
         leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
         rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
         drive.init(hardwareMap);
+        pinpoint.init(hardwareMap);
         /*
          * To drive forward, most robots need the motor on one side to be reversed,
          * because the axles point in opposite directions. Pushing the left stick forward
@@ -150,7 +106,7 @@ public class teleop_ extends OpMode {
     }
 
     /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit START3
+     * Code to run REPEATEDLY after the driver hits INIT, but before they hit START
      */
     @Override
     public void init_loop() {
@@ -215,6 +171,7 @@ public class teleop_ extends OpMode {
         telemetry.addData("Triggers", "left (%.2f, right (%.2f)",gamepad2.left_trigger, gamepad2.right_trigger);
         telemetry.addData("intake", intake.getCurrentPosition());
         telemetry.addData("launcher", launcher.getCurrentPosition());
+        pinpoint.report();
     }
 
     /*
@@ -234,7 +191,7 @@ public class teleop_ extends OpMode {
 
     void launch() {
         /*
-         * Calling gamepad1.right_bumper returns a boolean which will be true if the bumper is
+         * Calling gamepad2.right_bumper returns a boolean which will be true if the bumper is
          * held down, and false if it is not. Notably, this will continue to be true for every
          * cycle of our code that the driver holds down that bumper.
          * The first step of our launch() function is checking to see if the user is currently

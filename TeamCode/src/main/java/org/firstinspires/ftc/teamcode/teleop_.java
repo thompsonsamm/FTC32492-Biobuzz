@@ -21,7 +21,8 @@ public class teleop_ extends OpMode {
     private DcMotor intake = null;
     private CRServo leftIntakeServo = null;
     private CRServo rightIntakeServo = null;
-    private CRServo windmillServo = null;
+    private CRServo left_feeder_servo = null;
+    private CRServo right_feeder_servo = null;
     // line below calls the "mecanumdrive" subsystem for controlling the motors in all opmode classes and the "pinpointv2" one for the odometry.
     mecanumdrive drive = new mecanumdrive();
     pinpointv2 pinpoint = new pinpointv2();
@@ -55,7 +56,8 @@ public class teleop_ extends OpMode {
          */
         intake = hardwareMap.get(DcMotor.class, "intake");
         launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        windmillServo = hardwareMap.get(CRServo.class, "windmillServo");
+        left_feeder_servo = hardwareMap.get(CRServo.class, "left_feeder_servo");
+        right_feeder_servo = hardwareMap.get(CRServo.class, "right_feeder_servo");
         leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
         rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
         drive.init(hardwareMap);
@@ -91,7 +93,8 @@ public class teleop_ extends OpMode {
          */
         leftIntakeServo.setPower(0);
         rightIntakeServo.setPower(0);
-        windmillServo.setPower(0);
+        left_feeder_servo.setPower(0);
+        right_feeder_servo.setPower(0);
 
         /*
          * Much like our drivetrain motors, we set the left intake servo to reverse so that both
@@ -183,9 +186,11 @@ public class teleop_ extends OpMode {
 
     void windmill() {
         if (gamepad2.left_bumper) {
-            windmillServo.setPower(1);
+            left_feeder_servo.setPower(1);
+            right_feeder_servo.setPower(1);
         } else {
-            windmillServo.setPower(0);
+            left_feeder_servo.setPower(0);
+            right_feeder_servo.setPower(0);
         }
     }
 

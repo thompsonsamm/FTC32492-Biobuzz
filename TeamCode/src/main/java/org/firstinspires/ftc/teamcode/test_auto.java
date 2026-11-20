@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import static com.qualcomm.robotcore.hardware.DcMotor.ZeroPowerBehavior.BRAKE;
@@ -11,23 +12,20 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.Launcher;
+import org.firstinspires.ftc.teamcode.subsystems.mecanumdrive;
+import org.firstinspires.ftc.teamcode.subsystems.pinpointv2;
+
 
 @SuppressWarnings("unused")
-@Autonomous
+@Autonomous @Disabled
 public class test_auto extends LinearOpMode {
 
-    private DcMotor leftFrontDrive = null;
-    private DcMotor leftBackDrive = null;
-    private DcMotor rightFrontDrive = null;
-    private DcMotor rightBackDrive = null;
-
-    public final int LAUNCHER_TARGET_VELOCITY = 1250; //2678 RPM
-    public final int LAUNCHER_MIN_VELOCITY = 1200; //2571 RPM
-
-    double leftFrontPower;
-    double rightFrontPower;
-    double leftBackPower;
-    double rightBackPower;
+    mecanumdrive drive = new mecanumdrive();
+    pinpointv2 pinpoint = new pinpointv2();
+    Launcher launcher = new Launcher(hardwareMap);
+    Intake intake = new Intake(hardwareMap);
     /**
      * This autonomous code will have the robot drive away from the wall then
      * launch preloaded pollen. An optional delay is available if your team chooses
@@ -37,42 +35,10 @@ public class test_auto extends LinearOpMode {
     public void runOpMode() {
         ElapsedTime autoTimer;
 
-        leftFrontDrive = hardwareMap.get(DcMotor.class, "left_front_drive");
-        rightFrontDrive = hardwareMap.get(DcMotor.class, "right_front_drive");
-        leftBackDrive = hardwareMap.get(DcMotor.class, "left_back_drive");
-        rightBackDrive = hardwareMap.get(DcMotor.class, "right_back_drive");
-        DcMotor intake = hardwareMap.get(DcMotor.class, "intake");
-        DcMotorEx launcher = hardwareMap.get(DcMotorEx.class, "launcher");
-        CRServo windmillServo = hardwareMap.get(CRServo.class, "windmillServo");
-        CRServo leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
-        CRServo rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");
-
-
-        // Put initialization blocks here.
-        leftFrontDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
-        leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
-        /*
-         * Setting zeroPowerBehavior to BRAKE enables a "brake mode". This causes the motor to
-         * slow down much faster when it is coasting. This creates a much more controllable
-         * drivetrain. As the robot stops much quicker.
-         */
-        leftFrontDrive.setZeroPowerBehavior(BRAKE);
-        rightFrontDrive.setZeroPowerBehavior(BRAKE);
-        leftBackDrive.setZeroPowerBehavior(BRAKE);
-        rightBackDrive.setZeroPowerBehavior(BRAKE);
-        intake.setZeroPowerBehavior(BRAKE);
-
-        // * Here we set our launcher to the RUN_USING_ENCODER runmode.
-        // * If you notice that you have no control over the velocity of the motor, it just jumps
-        // * right to a number much higher than your set point, make sure that your encoders are plugged
-        // * into the port right beside the motor itself. And that the motors polarity is consistent
-        // * through any wiring.
-
-        launcher.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        launcher.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(40, 0, 0, 12.5));
+        drive.init(hardwareMap);
+        pinpoint.init(hardwareMap);
+        intake.init();
+        launcher.init();
 
         /*
          * set Feeders to an initial value to initialize the servo controller

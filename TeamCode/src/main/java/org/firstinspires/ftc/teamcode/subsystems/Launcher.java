@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class Launcher {
@@ -25,11 +26,17 @@ public class Launcher {
     }
 
     public void init() {
-        leftFeederServo = hardwareMap.get(CRServo.class, "leftFeederServo");
-        rightFeederServo = hardwareMap.get(CRServo.class, "rightFeederServo");
+        leftFeederServo = hardwareMap.get(CRServo.class, "left_feeder_servo");
+        rightFeederServo = hardwareMap.get(CRServo.class, "right_feeder_servo");
         launcherMotor = hardwareMap.get(DcMotorEx.class, "launcher");
 
+        launcherMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         launcherMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        launcherMotor.setPIDFCoefficients(DcMotor.RunMode.RUN_USING_ENCODER, new PIDFCoefficients(40, 0, 0, 12.5));
+
+        leftFeederServo.setPower(0);
+        rightFeederServo.setPower(0);
     }
 
     public void toggle() {
@@ -40,4 +47,26 @@ public class Launcher {
         }
     }
 
+    public void spinUp() {
+        launcherMotor.setVelocity(TARGET_VELOCITY);
+    }
+    public void spinDown() {
+        launcherMotor.setVelocity(0);
+    }
+    public void shoot() {
+        spinUp();
+        if (launcherMotor.getVelocity() > MIN_VELOCITY) {
+            leftFeederServo.setPower(1);
+            rightFeederServo.setPower(1);
+        } else {
+            leftFeederServo.setPower(0);
+            rightFeederServo.setPower(0);
+        }
+
+
+    }
+    public void stopFeeder() {
+        leftFeederServo.setPower(0);
+        rightFeederServo.setPower(0);
+    }
 }

@@ -11,13 +11,8 @@ public class Intake {
     private CRServo leftIntakeServo;
     private CRServo rightIntakeServo;
     private DcMotor intakeMotor;
-    private HardwareMap hardwareMap;
-    
-    public Intake(HardwareMap hardwareMap) {
-        this.hardwareMap = hardwareMap;
-    }
 
-    public void init() {
+    public void init(HardwareMap hardwareMap) {
         intakeMotor = hardwareMap.get(DcMotor.class, "intake");
         leftIntakeServo = hardwareMap.get(CRServo.class, "left_intake_servo");
         rightIntakeServo = hardwareMap.get(CRServo.class, "right_intake_servo");

@@ -14,15 +14,15 @@ import org.firstinspires.ftc.teamcode.subsystems.Intake;
 import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.mecanumdrive;
 import org.firstinspires.ftc.teamcode.subsystems.pinpointv2;
-@TeleOp(name = "teleop", group = "StarterBot")
+@TeleOp(name = "teleop1", group = "StarterBot")
 //@Disabled
 public class teleop_ extends OpMode {
 
     // Declare OpMode members.
     mecanumdrive drive = new mecanumdrive();
     pinpointv2 pinpoint = new pinpointv2();
-    Launcher launcher = new Launcher(hardwareMap);
-    Intake intake = new Intake(hardwareMap);
+    Launcher launcher = new Launcher();
+    Intake intake = new Intake();
     /*
      * These two variables are used to control the velocity of the launcher motor.
      * They are both in encoder ticks per second. The motors we use in the FIRST Tech Challenge
@@ -53,8 +53,8 @@ public class teleop_ extends OpMode {
          */
         drive.init(hardwareMap);
         pinpoint.init(hardwareMap);
-        intake.init();
-        launcher.init();
+        intake.init(hardwareMap);
+        launcher.init(hardwareMap);
 
         /*
          * Tell the driver that initialization is complete.

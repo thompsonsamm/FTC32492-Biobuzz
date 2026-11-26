@@ -3,7 +3,6 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -14,10 +13,14 @@ public class Launcher {
 
     private DcMotorEx launcherMotor;
 
-    public final int TARGET_VELOCITY = 1420;
-    public final int MIN_VELOCITY = 1320;
+    public final int INITIAL_TARGET_VELOCITY = 1220;
+    public int TARGET_VELOCITY = INITIAL_TARGET_VELOCITY;
+    public final int MIN_VELOCITY = 30;
+    //50 velocity is 107 rpm
     public final double FEED_TIME_SEC = 0.3;
     private ElapsedTime feed_timer = new ElapsedTime();
+
+
 
     public void init(HardwareMap hardwareMap) {
         leftFeederServo = hardwareMap.get(CRServo.class, "left_feeder_servo");
@@ -35,14 +38,6 @@ public class Launcher {
         rightFeederServo.setPower(0);
     }
 
-    public void toggle() {
-        if (launcherMotor.getVelocity() < MIN_VELOCITY) {
-            launcherMotor.setVelocity(TARGET_VELOCITY);
-        } else {
-            launcherMotor.setVelocity(0);
-        }
-    }
-
     public void spinUp() {
         launcherMotor.setVelocity(TARGET_VELOCITY);
     }
@@ -51,18 +46,33 @@ public class Launcher {
     }
     public void shoot() {
         spinUp();
-       // if (launcherMotor.getVelocity() > MIN_VELOCITY) {
+        if (launcherMotor.getVelocity() > (TARGET_VELOCITY - MIN_VELOCITY) && launcherMotor.getVelocity() < (TARGET_VELOCITY + MIN_VELOCITY))  {
             leftFeederServo.setPower(1);
             rightFeederServo.setPower(1);
-      //  } else {
-        //    leftFeederServo.setPower(0);
-          //  rightFeederServo.setPower(0);
-       // }
+        } else {
+            leftFeederServo.setPower(0);
+            rightFeederServo.setPower(0);
+        }
 
 
     }
     public void stopFeeder() {
         leftFeederServo.setPower(0);
         rightFeederServo.setPower(0);
+    }
+    public void speedUp() {
+        TARGET_VELOCITY += 10;
+    }
+    public void speedDown() {
+        TARGET_VELOCITY -= 10;
+    }
+    public void speedNormal() {
+        TARGET_VELOCITY = INITIAL_TARGET_VELOCITY;
+    }
+    public double currentVelocity() {
+        return launcherMotor.getVelocity();
+    }
+    public int targetVelocity() {
+        return TARGET_VELOCITY;
     }
 }

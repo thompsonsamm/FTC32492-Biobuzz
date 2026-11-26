@@ -100,6 +100,17 @@ public class teleop_ extends OpMode {
         } else {
             intake.setPower(0);
         }
+        if (gamepad2.yWasPressed()) {
+            launcher.speedUp();
+        }
+        if (gamepad2.aWasPressed()) {
+            launcher.speedDown();
+        }
+        if (gamepad2.dpad_right) {
+            launcher.speedNormal();
+        }
+        telemetry.addData("launcher", launcher.currentVelocity());
+        telemetry.addData("launcher target", launcher.targetVelocity());
     }
         /*intake.setPower(intakePower);
         leftIntakeServo.setPower(intakePower);
@@ -111,6 +122,7 @@ public class teleop_ extends OpMode {
         telemetry.addData("intake", intake.getCurrentPosition());
         telemetry.addData("launcher", launcher.getCurrentPosition());
         pinpoint.report();
+         */
     /*
      * Code to run ONCE after the driver hits STOP
      */

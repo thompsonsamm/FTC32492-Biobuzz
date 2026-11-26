@@ -8,7 +8,7 @@ import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 import org.firstinspires.ftc.teamcode.subsystems.mecanumdrive;
 import org.firstinspires.ftc.teamcode.subsystems.pinpointv2;
 
-@TeleOp(name = "teleop1", group = "StarterBot")
+@TeleOp(name = "teleopdriveronly", group = "StarterBot")
 //@Disabled
 public class teleopdriveronly_ extends OpMode {
 

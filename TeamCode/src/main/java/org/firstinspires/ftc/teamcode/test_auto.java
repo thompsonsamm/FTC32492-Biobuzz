@@ -20,8 +20,7 @@ import org.firstinspires.ftc.teamcode.subsystems.pinpointv2;
 
 
 //@SuppessWarnings("unused")
-//@Autonomous
-@Disabled
+@Autonomous
 public class test_auto extends LinearOpMode {
 
     mecanumdrive drive = new mecanumdrive();

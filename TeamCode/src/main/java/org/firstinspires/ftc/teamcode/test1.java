@@ -29,7 +29,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
+/*
  * This file contains a minimal example of an iterative (Non-Linear) "OpMode". An OpMode is a
  * 'program' that runs in either the autonomous or the TeleOp period of an FTC match. The names
  * of OpModes appear on the menu of the FTC Driver Station. When an selection is made from the

@@ -1,17 +1,54 @@
 {
   "version": "2.0.0",
-  "timestamp": "2026-11-25T23:48:16.900Z",
+  "timestamp": "2026-11-25T23:56:37.318Z",
   "startPoint": {
     "x": 58.75,
     "y": 118.75,
-    "headingDeg": 90,
-    "locked": false
+    "locked": false,
+    "headingDeg": 90
   },
   "lines": [
     {
+      "kind": "atomic",
+      "id": "line-mwws5sp6-xv2c9f",
+      "endPoint": {
+        "x": 58.75,
+        "y": 118.75
+      },
+      "controlPoints": [],
+      "heading": {
+        "type": "constant",
+        "reverse": true,
+        "degrees": -90,
+        "startDeg": 0,
+        "endDeg": 0,
+        "piecewiseHeading": {
+          "segments": [
+            {
+              "startProgress": 0,
+              "endProgress": 1,
+              "interpolationType": "linear",
+              "reversed": false,
+              "parameters": {
+                "startDeg": 0,
+                "endDeg": 0
+              }
+            }
+          ]
+        }
+      },
+      "color": "#b07aa1",
+      "locked": false,
+      "waitBeforeMs": 0,
+      "waitAfterMs": 10000,
+      "waitBeforeName": "",
+      "waitAfterName": "",
+      "name": "Wait"
+    },
+    {
       "id": "line-mwwrvgci-ny3zt2",
       "color": "#ffc516",
-      "name": "Path 1",
+      "name": "MoveToLZ",
       "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
@@ -209,6 +246,10 @@
     }
   ],
   "sequence": [
+    {
+      "kind": "path",
+      "lineId": "line-mwws5sp6-xv2c9f"
+    },
     {
       "kind": "path",
       "lineId": "line-mwwrvgci-ny3zt2"

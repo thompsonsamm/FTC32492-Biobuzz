@@ -1,17 +1,17 @@
 {
   "version": "2.0.0",
-  "timestamp": "2026-11-25T23:46:16.133Z",
+  "timestamp": "2026-11-25T23:53:31.034Z",
   "startPoint": {
     "x": 58.75,
     "y": 10.75,
-    "headingDeg": 90,
-    "locked": false
+    "locked": false,
+    "headingDeg": 90
   },
   "lines": [
     {
       "id": "line-mwwrm4nq-50fvb0",
       "color": "#ffc516",
-      "name": "Path 1",
+      "name": "MoveToLZ",
       "locked": false,
       "waitBeforeMs": 0,
       "waitAfterMs": 0,
@@ -24,8 +24,8 @@
       },
       "controlPoints": [
         {
-          "x": 15.75,
-          "y": 43.75
+          "x": 22.75,
+          "y": 10.75
         }
       ],
       "heading": {

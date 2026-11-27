@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
+import com.pedropathing.ivy.Command;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
@@ -18,9 +19,16 @@ public class Launcher {
     public final int MIN_VELOCITY = 30;
     //50 velocity is 107 rpm
     public final double FEED_TIME_SEC = 0.3;
-    private ElapsedTime feed_timer = new ElapsedTime();
+    private ElapsedTime feed_timer = new ElapsedTime(); // todo(juni): remove this?
+    private ElapsedTime shootTimer = new ElapsedTime();
 
-
+    public Command shootCommand(double timeSec) {
+        return Command.build()
+                .setStart(() -> { spinUp(); shootTimer.reset(); })
+                .setExecute(this::shoot)
+                .setDone(() -> shootTimer.seconds() <= timeSec)
+                .setEnd(endCondition -> spinDown());
+    }
 
     public void init(HardwareMap hardwareMap) {
         leftFeederServo = hardwareMap.get(CRServo.class, "left_feeder_servo");

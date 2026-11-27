@@ -17,6 +17,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.subsystems.Intake;
+import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 
 @Autonomous(name = "Tuff", group = "Autonomous")
 public class Tuff extends LinearOpMode {
@@ -31,11 +33,15 @@ public class Tuff extends LinearOpMode {
     private final Pose moveToPickupControl2 = poseFactory.of(127.1635, 97.4086, 0);
     private final Pose moveToLZ = poseFactory.of(124.75, 40.75, 90);
     private final Pose moveToLZControl1 = poseFactory.of(109.75, 85.75, 0);
+    private Launcher launcher = new Launcher();
+    private Intake intake = new Intake();
 
     // Autonomous routine
     public Command autoRoutine() {
         return sequential(
+                launcher.shootCommand(10.0),
                 follow(follower, moveToPickup()),
+                intake.intake(10.0),
                 follow(follower, moveToLZ())
         );
     }
@@ -46,6 +52,9 @@ public class Tuff extends LinearOpMode {
         follower = Constants.create(hardwareMap);
         follower.setPose(start);
         follower.update();
+
+        intake.init(hardwareMap);
+        launcher.init(hardwareMap);
 
         waitForStart();
         schedule(autoRoutine());

@@ -15,8 +15,10 @@ import static com.pedropathing.ivy.groups.Groups.sequential;
 import static com.pedropathing.ivy.pedro.PedroCommands.follow;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.pedro.Constants;
+import org.firstinspires.ftc.teamcode.subsystems.Launcher;
 
 @Autonomous(name = "ImmediateStart", group = "Autonomous")
 public class ImmediateStart extends LinearOpMode {
@@ -38,10 +40,6 @@ public class ImmediateStart extends LinearOpMode {
         );
     }
 
-    private Command shoot() {
-        return null;
-    }
-
     @Override
     public void runOpMode() {
         Scheduler.reset();
@@ -50,7 +48,21 @@ public class ImmediateStart extends LinearOpMode {
         follower.setPose(start);
         follower.update();
 
+        Launcher launcher = new Launcher();
+        ElapsedTime elapsedTime = new ElapsedTime();
+
         waitForStart();
+
+        // shoot
+        if (opModeIsActive()) {
+            launcher.spinUp();
+            elapsedTime.reset();
+            while (elapsedTime.seconds() <= 15 && opModeIsActive()) {
+                launcher.shoot();
+            }
+            launcher.spinDown();
+        }
+
         schedule(autoRoutine());
 
         while (opModeIsActive()) {

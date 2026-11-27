@@ -30,48 +30,26 @@ public class teleop_ extends OpMode {
     public final int LAUNCHER_TARGET_VELOCITY = 1420;
     public final int LAUNCHER_MIN_VELOCITY = 1320;
     private final boolean launcherToggle = false;
-    // Create a variable to set to the intake.
-    double intakePower;
 
-    /*
-     * Code to run ONCE when the driver hits INIT
-     */
     @Override
     public void init() {
 
-        /*
-         * Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
-         * step.
-         */
         drive.init(hardwareMap);
         pinpoint.init(hardwareMap);
         intake.init(hardwareMap);
         launcher.init(hardwareMap);
 
-        /*
-         * Tell the driver that initialization is complete.
-         */
         telemetry.addData("Status", "Initialized");
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits INIT, but before they hit START
-     */
     @Override
     public void init_loop() {
     }
 
-    /*
-     * Code to run ONCE when the driver hits START
-     */
     @Override
     public void start() {
     }
 
-    /*
-     * Code to run REPEATEDLY after the driver hits START but before they hit STOP
-     */
     @Override
     public void loop() {
         drive.mecanumDrive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x);
@@ -90,8 +68,6 @@ public class teleop_ extends OpMode {
             intake.setPower(1);
         } else if (gamepad2.left_bumper) {
             intake.setPower(-1);
-        } else {
-            intake.setPower(0);
         }
         if (gamepad2.yWasPressed()) {
             launcher.speedUp();
@@ -105,20 +81,11 @@ public class teleop_ extends OpMode {
         telemetry.addData("launcher", launcher.currentVelocity());
         telemetry.addData("launcher target", launcher.targetVelocity());
     }
-        /*intake.setPower(intakePower);
-        leftIntakeServo.setPower(intakePower);
-        rightIntakeServo.setPower(intakePower);*/
-        /*
-         * Show motor powers on the Driver Station via telemetry.
-         */
         /*telemetry.addData("Triggers", "left (%.2f, right (%.2f)",gamepad2.left_trigger, gamepad2.right_trigger);
         telemetry.addData("intake", intake.getCurrentPosition());
         telemetry.addData("launcher", launcher.getCurrentPosition());
         pinpoint.report();
          */
-    /*
-     * Code to run ONCE after the driver hits STOP
-     */
     @Override
     public void stop() {
     }

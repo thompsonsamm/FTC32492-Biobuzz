@@ -47,10 +47,17 @@ public class test_auto extends LinearOpMode {
             // Enable the sleep call below (Line 51) to add a delay to the program starting
             // The default delay is 10 seconds so be sure to adjust based on your strategy!
             launcher.spinUp();
+
+            // The flywheel is set to spin for 15 seconds.
+            while (autoTimer.seconds() <= 15 && opModeIsActive()) {
+                // The flywheel must be within a specified range of the target velocity for the intake and feeder servo to activate!
+                launcher.shoot();
+            }
+
             // Robot drives forward 700 milliseconds to no longer touch the wall
             autoTimer.reset();
             while (autoTimer.milliseconds() <= 700 && opModeIsActive()) {
-                drive.mecanumDrive(0.25, 0, 0);
+                drive.mecanumDrive(-0.25, 0, 0);
             }
             }
 
@@ -60,10 +67,6 @@ public class test_auto extends LinearOpMode {
             // Flywheel begins launch sequence for the preloaded pollen
             autoTimer.reset();
 
-            // The flywheel is set to spin for 15 seconds.
-            while (autoTimer.seconds() <= 15 && opModeIsActive()) {
-                // The flywheel must be within a specified range of the target velocity for the intake and feeder servo to activate!
-                launcher.shoot();
-            }
+
         }
     }

@@ -25,15 +25,21 @@ public class ImmediateStart extends LinearOpMode {
 
     private final PoseFactory poseFactory = PoseFactory.degrees();
 
+
     private final Pose start = poseFactory.of(58.75, 10.75, 90);
-    private final Pose moveToLZ = poseFactory.of(8.75, 106.75, 90);
-    private final Pose moveToLZControl1 = poseFactory.of(22.75, 10.75, 0);
+    private final Pose moveToLZ = poseFactory.of(16.75, 94.75, -90);
+    private final Pose moveToLZControl1 = poseFactory.of(16.75, 10.75, 0);
+
 
     // Autonomous routine
     public Command autoRoutine() {
         return sequential(
                 follow(follower, moveToLZ())
         );
+    }
+
+    private Command shoot() {
+        return null;
     }
 
     @Override
